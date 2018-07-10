@@ -21,12 +21,17 @@ function handleFailure(err) {
 }
 
 function logIn(login, password) {
-    return browser.findElement(webdriver.By.xpath('/html/body/div[@class=\'wrapper\']/header[@class=\'header\']/div[@class=\'header_line\']/div[@class=\'headblock headblock-menu\']/a[@class=\'btn head-btn\'][1]')).click().then(() => {
+    return browser.findElement(webdriver.By.xpath('/html/body/div[@class=\'wrapper\']/header[@class=\'header\']/div[@class=\'header_line\']/div[@class=\'headblock headblock-menu\']/a[@class=\'btn head-btn\'][1]')).click()
+        .then(() => {
         return browser.findElement(webdriver.By.name('login')).sendKeys(login)
     }).then(() => {
         return browser.findElement(webdriver.By.name('password')).sendKeys(password);
     }).then(() => {
         return browser.findElement(webdriver.By.css('div.loginbox-login > button.btn')).click();
+    }).then(() => {
+        return browser.findElement(webdriver.By.xpath("/html/body/div[@class='wrapper']/header[@class='header']/div[@class='header_line']/div[@class='headblock headblock-menu']")).then((el) => {
+            logElementText(el);
+        });
     })
 }
 
@@ -38,7 +43,7 @@ function searchByName(searchQuery) {
         return browser.findElement(webdriver.By.xpath("/html/body/div[@class='wrapper']/header[@class='header']/div[@class='header_line']/form[@id='hsearch']/button[@class='btn head-btn']")).click();
     }).then(() => {
         return browser.wait(until.elementLocated(webdriver.By.css("div.pgs-search-title")), 2000).then((el) => {
-            logSearchQuery(el);
+            logElementText(el);
         });
     })
 }
@@ -58,7 +63,7 @@ function logTitle() {
     });
 }
 
-function logSearchQuery(element) {
+function logElementText(element) {
     element.getText().then(function (text) {
         console.log(text);
     });
